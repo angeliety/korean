@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>word of the day</title>
+    <style>
+        body {
+            background-color: white;
+            color: black;
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            text-align: center;
+            flex-direction: column;
+        }
+        #word {
+            font-size: 3em; /* Larger font size for the Korean word */
+            margin: 10px 0;
+        }
+        #pronunciation {
+            font-size: 1.5em; /* Smaller font size for pronunciation */
+            margin: 5px 0;
+        }
+        #translation {
+            font-size: 1.5em; /* Smaller font size for translation */
+            margin: 5px 0;
+        }
+        button {
+            margin-top: 20px;
+            background: none;
+            border: none;
+            cursor: pointer;
+            padding: 0;
+        }
+        button img {
+            width: 40px;
+            height: 40px;
+        }
+        button:hover img {
+            filter: brightness(1.2);
+        }
+    </style>
+</head>
+<body>
+    <div>
+        <p id="word"></p>
+        <p id="pronunciation"></p>
+        <p id="translation"></p>
+        <button onclick="playPronunciation()">
+            <img src="https://img.icons8.com/ios-filled/50/000000/speaker.png" alt="Volume Icon">
+        </button>
+    </div>
+
+    <script>
+        const words = [
+            { korean: "사랑", pronunciation: "salang", translation: "love" },
+            { korean: "행복", pronunciation: "haengbok", translation: "happiness" },
+            { korean: "학교", pronunciation: "hakgyo", translation: "school" },
+            { korean: "책", pronunciation: "chaek", translation: "book" },
+            { korean: "음악", pronunciation: "eumak", translation: "music" },
+            { korean: "음식", pronunciation: "eumsik", translation: "food" },
+            { korean: "친구", pronunciation: "chingu", translation: "friend" },
+            { korean: "물", pronunciation: "mul", translation: "water" },
+            { korean: "하늘", pronunciation: "haneul", translation: "sky" },
+            { korean: "사람", pronunciation: "salam", translation: "person" }
+        ];
+
+        let currentWord = {};
+
+        function getWordOfTheDay() {
+            const date = new Date();
+            const dayOfYear = Math.floor((date - new Date(date.getFullYear(), 0, 0)) / 1000 / 60 / 60 / 24);
+            const index = dayOfYear % words.length;
+
+            currentWord = words[index];
+            document.getElementById('word').textContent = currentWord.korean;
+            document.getElementById('pronunciation').textContent = `[${currentWord.pronunciation}]`;
+            document.getElementById('translation').textContent = currentWord.translation;
+        }
+
+        function playPronunciation() {
+            const utterance = new SpeechSynthesisUtterance(currentWord.pronunciation);
+            utterance.lang = 'ko-KR';
+            speechSynthesis.speak(utterance);
+        }
+
+        getWordOfTheDay();
+    </script>
+</body>
+</html>
